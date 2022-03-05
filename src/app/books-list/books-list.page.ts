@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IBook } from '../books/i-book';
+import { BooksService } from '../books/books.service';
+import { alertController } from '@ionic/core';
 
 @Component({
   selector: 'app-books-list',
@@ -6,11 +9,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./books-list.page.scss'],
 })
 export class BooksListPage implements OnInit {
-  public books: Array<any>;
+  public books: IBook[] = [];
   input: string;
 
   ngOnInit() {
-    this.books = [{id: 1, name: 'Book 1', owned: true, show: 'flex'}, {id: 2, name: 'Second book', owned: false, show: 'flex'}];
+    this.booksService.getBooks()
+    .subscribe(
+      books => this.books = books,
+      error => console.error(error),
+      () => console.log('Books loaded')
+    );
     
     const searchbar = document.querySelector('ion-searchbar');
 
@@ -22,8 +30,37 @@ export class BooksListPage implements OnInit {
     });
   }
 
-  ionViewDidLoad() {
-    
+  constructor(private booksService: BooksService) { }
+
+  clickItem(book) {
+    console.log(book);
+    this.handleButtonClick(book);
+
+  }
+
+  async handleButtonClick(book) {
+    const alert = await alertController.create({
+      header: `${book.id} - ${book.name}`,
+      message: 'Do you have this book?',
+      buttons: [
+        {
+        text: 'No',
+        role: 'no',
+        cssClass: 'secondary',
+        id: 'no-button',
+        handler: () => {
+          console.log('NO');
+        }
+      }, {
+        text: 'Yes',
+        id: 'yes-button',
+        handler: () => {
+          console.log('Yes Okay');
+        }
+      }],
+    });
+
+    await alert.present();
   }
 
 }

@@ -5,10 +5,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="input"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="input" style="position:fixed; z-index: 99;"></ion-searchbar>
 
   <ion-list>
-    <ion-item *ngFor="let book of books" [style.display]="book.show">
+    <ion-item></ion-item>
+    <ion-item *ngFor="let book of books" [style.display]="book.show" (click)="clickItem(book)">
       <span style="flex: 1;">{{book.id}} - {{book.name}}</span>
       <span style="float:right;">{{book.owned ? "✅" : "❌"}}</span>
     </ion-item>
