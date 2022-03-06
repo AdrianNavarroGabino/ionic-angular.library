@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { SERVICES } from '../app.constants';
 import { map, catchError } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs';
@@ -14,5 +14,9 @@ export class BooksService {
 
   getBooks(): Observable<IBook[]> {
     return this.http.get<IBook[]>(SERVICES)
+  }
+
+  updateBook(book: IBook): Observable<any> {
+    return this.http.put<any>(SERVICES + '/books/' + book.id, {owned: book.owned});
   }
 }

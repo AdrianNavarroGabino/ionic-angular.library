@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IBook } from '../books/i-book';
 import { BooksService } from '../books/books.service';
 import { alertController } from '@ionic/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-books-list',
@@ -30,7 +31,7 @@ export class BooksListPage implements OnInit {
     });
   }
 
-  constructor(private booksService: BooksService) { }
+  constructor(private booksService: BooksService, public alertController: AlertController) { }
 
   clickItem(book) {
     console.log(book);
@@ -49,15 +50,35 @@ export class BooksListPage implements OnInit {
         cssClass: 'secondary',
         id: 'no-button',
         handler: () => {
-          console.log('NO');
+          this.booksService.updateBook({id: book.id, name: book.name, owned: false, show: book.show})
+          .subscribe(
+            ok => book.owned = false,
+            error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
+          );
         }
       }, {
         text: 'Yes',
         id: 'yes-button',
         handler: () => {
-          console.log('Yes Okay');
+          this.booksService.updateBook({id: book.id, name: book.name, owned: true, show: book.show})
+                          .subscribe(
+                            _ => book.owned = true,
+                            error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
+                          );
         }
       }],
+    });
+
+    await alert.present();
+  }
+
+  async showAlert(header: string, subHeader: string, message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header,
+      subHeader,
+      message,
+      buttons: ['OK']
     });
 
     await alert.present();
