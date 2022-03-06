@@ -19,7 +19,7 @@ export class BooksListPage implements OnInit {
     searchbar.addEventListener('ionChange', () => {
       console.log(this.input);
       this.books.forEach(book => {
-        book.show = (`${book.id} - ${book.name.toLowerCase()}`).includes(this.input) ? 'flex' : 'none';
+        book.show = (`${book.id} - ${book.name.toLowerCase()}`).includes(this.input.toLowerCase()) ? 'flex' : 'none';
       });
     });
 
