@@ -23,4 +23,8 @@ export class BooksService {
   insertBook(book: IBook): Observable<any> {
     return this.http.post<any>(SERVICES + '/books', book);
   }
+
+  deleteBook(id: number): Observable<any> {
+    return this.http.delete<any>(SERVICES + "/books/" + id);
+  }
 }

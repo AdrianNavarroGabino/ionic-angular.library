@@ -9,9 +9,10 @@
 
   <ion-list>
     <ion-item></ion-item>
-    <ion-item *ngFor="let book of books" [style.display]="book.show" (click)="clickItem(book)">
-      <span style="flex: 1;">{{book.id}} - {{book.name}}</span>
-      <span style="float:right;">{{book.owned ? "✅" : "❌"}}</span>
+    <ion-item *ngFor="let book of books" [style.display]="book.show">
+      <span (click)="clickItem(book)" style="flex: 1;">{{book.id}} - {{book.name}}</span>
+      <span (click)="clickItem(book)" style="float:right;">{{book.owned ? "✅" : "❌"}}</span>
+      <ion-icon name="trash-outline" class="deleteIcon" (click)="delete(book)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

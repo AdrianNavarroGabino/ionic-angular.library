@@ -14,13 +14,6 @@ export class BooksListPage implements OnInit {
   input: string;
 
   ngOnInit() {
-    this.booksService.getBooks()
-    .subscribe(
-      books => this.books = books,
-      error => console.error(error),
-      () => console.log('Books loaded')
-    );
-    
     const searchbar = document.querySelector('ion-searchbar');
 
     searchbar.addEventListener('ionChange', () => {
@@ -29,6 +22,15 @@ export class BooksListPage implements OnInit {
         book.show = (`${book.id} - ${book.name.toLowerCase()}`).includes(this.input) ? 'flex' : 'none';
       });
     });
+  }
+
+  ionViewWillEnter() {
+    this.booksService.getBooks()
+    .subscribe(
+      books => this.books = books,
+      error => console.error(error),
+      () => console.log('Books loaded')
+    );
   }
 
   constructor(private booksService: BooksService, public alertController: AlertController) { }
@@ -79,6 +81,32 @@ export class BooksListPage implements OnInit {
       subHeader,
       message,
       buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async delete(book) {
+    const alert = await alertController.create({
+      header: `${book.id} - ${book.name}`,
+      message: 'Do you want to delete this book?',
+      buttons: [
+        {
+        text: 'No',
+        role: 'no',
+        cssClass: 'secondary',
+        id: 'no-button'
+      }, {
+        text: 'Yes',
+        id: 'yes-button',
+        handler: () => {
+          this.booksService.deleteBook(book.id)
+                          .subscribe(
+                            _ => this.books = this.books.filter(b => b != book),
+                            error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
+                          );
+        }
+      }],
     });
 
     await alert.present();
