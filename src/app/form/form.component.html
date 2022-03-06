@@ -1,0 +1,19 @@
+<div>
+  <ion-item>
+    <ion-label position="floating">Id:</ion-label>
+    <ion-input type="text" id="idInput"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Title:</ion-label>
+    <ion-input type="text" id="nameInput"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">You got it?</ion-label>
+    <ion-button color="success" id="yes" class="not-checked" (click)="clickYes()">Yes</ion-button>
+    <ion-button color="danger" id="no" class="not-checked" (click)="clickNo()">No</ion-button>
+  </ion-item>
+
+  <ion-button expand="block" id="saveBtn" (click)="clickSave()">Save</ion-button>
+</div>

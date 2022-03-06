@@ -1,0 +1,21 @@
+#yes, #no {
+    width: 100px;
+    height: 40px;
+}
+
+#yes {
+    margin-right: 10%;
+    margin-left: 10%
+}
+
+.not-checked {
+    opacity: 0.2;
+}
+
+.checked {
+    opacity: 1;
+}
+
+#saveBtn, ion-item {
+    margin-top: 20px;
+}

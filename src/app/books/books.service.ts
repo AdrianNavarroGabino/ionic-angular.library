@@ -19,4 +19,8 @@ export class BooksService {
   updateBook(book: IBook): Observable<any> {
     return this.http.put<any>(SERVICES + '/books/' + book.id, {owned: book.owned});
   }
+
+  insertBook(book: IBook): Observable<any> {
+    return this.http.post<any>(SERVICES + '/books', book);
+  }
 }
