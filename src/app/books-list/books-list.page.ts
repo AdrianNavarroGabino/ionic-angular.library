@@ -22,6 +22,10 @@ export class BooksListPage implements OnInit {
         book.show = (`${book.id} - ${book.name.toLowerCase()}`).includes(this.input) ? 'flex' : 'none';
       });
     });
+
+    searchbar.addEventListener('ionCancel', () => {
+      this.books.forEach(book => book.show = 'flex');
+    });
   }
 
   ionViewWillEnter() {
