@@ -1,4 +1,6 @@
 import { AlertController } from "@ionic/angular";
+import { originalList } from "./app.constants";
+import { IBook } from "./books/i-book";
 
 export class Utilities {
     constructor() { }
@@ -14,5 +16,14 @@ export class Utilities {
         });
 
         await alert.present();
+    }
+
+    saveBooks(books: IBook[]) {
+      localStorage.setItem("books", JSON.stringify(books));
+      return books;
+    }
+
+    loadBooks() {
+      return localStorage.getItem("books") && JSON.parse(localStorage.getItem("books")) || this.saveBooks(originalList);
     }
 }

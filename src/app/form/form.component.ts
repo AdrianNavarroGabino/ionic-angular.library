@@ -52,6 +52,10 @@ export class FormComponent implements OnInit {
       return this.utilities.showAlert("Error", "", "Id must be a number");
     }
 
+    if(Number(id.value) === 0) {
+      return this.utilities.showAlert("Error", "", "Id must be greater than 0");
+    }
+
     if(!name.value) {
       return this.utilities.showAlert("Error", "", "Name can't be empty");
     }
@@ -60,11 +64,18 @@ export class FormComponent implements OnInit {
       return this.utilities.showAlert("Error", "", "You must select yes or no");
     }
 
-    this.booksService.insertBook({id: Number(id.value), name: name.value, owned: this.owned})
+    const books = this.utilities.loadBooks();
+    if(books.some(b => b.id == id.value)) {
+      return this.utilities.showAlert("Error", "", `Book n.${id.value} already exists`);
+    }
+    books.push({id: Number(id.value), name: name.value, owned: this.owned});
+    this.utilities.saveBooks(books);
+    this.reset();
+    /*this.booksService.insertBook({id: Number(id.value), name: name.value, owned: this.owned})
     .subscribe(
       _ => this.reset(),
       error => this.utilities.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
-    );
+    );*/
   }
 
   reset() {

@@ -3,6 +3,7 @@ import { IBook } from '../books/i-book';
 import { BooksService } from '../books/books.service';
 import { alertController } from '@ionic/core';
 import { AlertController } from '@ionic/angular';
+import { Utilities } from '../app.utilities';
 
 @Component({
   selector: 'app-books-list',
@@ -29,15 +30,17 @@ export class BooksListPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.booksService.getBooks()
+    /*this.booksService.getBooks()
     .subscribe(
       books => this.books = books,
       error => console.error(error),
       () => console.log('Books loaded')
-    );
+    );*/
+    this.books = this.utilities.loadBooks()
+                    .sort((a, b) => a.id - b.id);
   }
 
-  constructor(private booksService: BooksService, public alertController: AlertController) { }
+  constructor(private booksService: BooksService, public alertController: AlertController, private utilities: Utilities) { }
 
   clickItem(book) {
     console.log(book);
@@ -56,21 +59,25 @@ export class BooksListPage implements OnInit {
         cssClass: 'secondary',
         id: 'no-button',
         handler: () => {
-          this.booksService.updateBook({id: book.id, name: book.name, owned: false, show: book.show})
+          book.owned = false;
+          this.utilities.saveBooks(this.books);
+          /*this.booksService.updateBook({id: book.id, name: book.name, owned: false, show: book.show})
           .subscribe(
             ok => book.owned = false,
             error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
-          );
+          );*/
         }
       }, {
         text: 'Yes',
         id: 'yes-button',
         handler: () => {
-          this.booksService.updateBook({id: book.id, name: book.name, owned: true, show: book.show})
+          book.owned = true;
+          this.utilities.saveBooks(this.books);
+          /*this.booksService.updateBook({id: book.id, name: book.name, owned: true, show: book.show})
                           .subscribe(
                             _ => book.owned = true,
                             error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
-                          );
+                          );*/
         }
       }],
     });
@@ -104,11 +111,13 @@ export class BooksListPage implements OnInit {
         text: 'Yes',
         id: 'yes-button',
         handler: () => {
-          this.booksService.deleteBook(book.id)
+          this.books = this.books.filter(b => b.id != book.id);
+          this.utilities.saveBooks(this.books);
+          /*this.booksService.deleteBook(book.id)
                           .subscribe(
                             _ => this.books = this.books.filter(b => b != book),
                             error => this.showAlert("ERROR", error.name, error.status + " - " + error.statusText)
-                          );
+                          );*/
         }
       }],
     });
