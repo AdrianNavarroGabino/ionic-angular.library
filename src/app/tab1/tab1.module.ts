@@ -6,6 +6,7 @@ import { Tab1Page } from './tab1.page';
 import { BooksListPageModule } from '../books-list/books-list.module';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { Utilities } from '../app.utilities';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     BooksListPageModule,
     Tab1PageRoutingModule
   ],
-  declarations: [Tab1Page]
+  declarations: [Tab1Page],
+  providers: [Utilities]
 })
 export class Tab1PageModule {}
